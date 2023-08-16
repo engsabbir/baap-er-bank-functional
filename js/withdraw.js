@@ -1,37 +1,20 @@
-function getInputValueById(inputId) {
-    const inputField = document.getElementById(inputId);
-    const inputFieldString = inputField.value;
-    const inputValue = parseFloat(inputFieldString);
-    inputField.value = '';
-    return inputValue;
-}
+document.getElementById('btn-withdraw').addEventListener('click', function(){
+    const withdrawInputValue = getInputValueById('withdraw-input')
+    const previousWithdrawAmount = getElementPreviousValueById('withdraw-total');
+    const previousBalanceAmount = getElementPreviousValueById('balance-total');
 
-function getElementPreviousValueById(elementId) {
-    const element = document.getElementById(elementId);
-    const elementValueString = element.innerText;
-    const elementValue = parseFloat(elementValueString);
-    return elementValue;
-}
+    if(isNaN(withdrawInputValue)){
+        alert('Please Provide a valid number.');
+        return;
+    }
+    if(withdrawInputValue>previousBalanceAmount){
+        alert('You cannot withdraw more than your amount.');
+        return;
+    }
+    
+    const newWithdrawAmount = previousWithdrawAmount + withdrawInputValue;
+    setElementValueById('withdraw-total', newWithdrawAmount);
 
-function setElementValueById(elementId, addedValue){
-    const newValue = document.getElementById(elementId);
-    newValue.innerText = addedValue;
-}
-
-
-
-document.getElementById('btn-withdraw').addEventListener('click', function () {
-    // deposit balance calculation:
-    const depositInputValue = getInputValueById('withdraw-input');
-    const previousDepositAmount = getElementPreviousValueById('withdraw-total');
-
-    const newDepositTotal = previousDepositAmount + depositInputValue;
-
-    setElementValueById('withdraw-total', newDepositTotal);
-
-    //total balance calculation:
-    const newBalanceTotal= getElementPreviousValueById('balance-total');
-    const newBalance = newBalanceTotal - depositInputValue;
-
-    setElementValueById('balance-total', newBalance);
+    const newBalanceAmount = previousBalanceAmount - withdrawInputValue;
+    setElementValueById('balance-total', newBalanceAmount);
 })
